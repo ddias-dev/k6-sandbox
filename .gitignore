@@ -1,3 +1,12 @@
 node_modules
 yarn-error.log
 dist
+
+# Yarn 2 No Zero-Installs
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

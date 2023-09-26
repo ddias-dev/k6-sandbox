@@ -1,0 +1,29 @@
+name: 'Get 200 Status - Load Testing'
+on:
+  workflow_dispatch:
+    inputs:
+      duration:
+        description: 'Test duration. Default 1m.'
+        required: false
+        default: 1m
+      vus:
+        description: 'Number of VUs to run concurrently. Default 1.'
+        required: false
+        default: '1'
+jobs:
+  k6_run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+      - run: yarn install
+      - name: Build k6 scripts
+        run: yarn build
+      - name: Run local k6 test
+        uses: grafana/k6-action@v0.2.0
+        with:
+          filename: dist/get-200-status.test.js
+          flags: --vus ${{ github.event.inputs.vus }} --duration ${{ github.event.inputs.duration }}
